@@ -47,7 +47,8 @@ connection.query("SELECT * FROM products", (err,res) => {
 				"10"
 
 			]
-	  })
+	  })  
+	  /* This then function will ask the user how many of that item they want. */
 	  .then(function(input) {
 		console.log("Ah, so you decided you wanted item " + input.action + "?")
 		var userid = input.action;
@@ -56,37 +57,29 @@ connection.query("SELECT * FROM products", (err,res) => {
 			name: "numberOf",
 			type: "number",
 			message: "how many of this item do you want?",	
+	
 		})
-		.then(function(number) {
-			console.log("It looks like we have 1 of " + input.action + ".")
-			var userid = input.action;
-			connection.query("SELECT id," + input.action + " FROM products.id", (err,res) => {
+		
+	  /* This then function will ask the user how many of that item they want. */
+		.then(function(answer) {
+			var inStock = ("SELECT * FROM top5000 WHERE ?", { quantity: answer.numberOf })
+			
+			console.log(inStock)
+			connection.query("SELECT product_name," + input.action + ' FROM products WHERE id="' + input.action + '"', (err,res) => {
 				if(err) throw err;
-			  
+				else if (inStock <= res) {
+					console.log('undefined');
+				} 
 				console.log('Data received from Db:');
-				console.log(res);
+				console.log(res.product_name);
+				
 			  });
-
-
-		/*function quan(quantity) {
-			searchQuan();
-		}
-
-		
-		
-		connection.connect(function searchQuan(err) {
-			if (err) throw err;
-			con.query("SELECT " + userid + " FROM quantity", function (err, result, fields) {
-			  if (err) throw err;
-			  console.log(result);
-			  console.log(userid);
-			});
-		  });*/
-		  Object.keys(result).forEach(function(key) {
-			var row = result[input.action];
-			console.log(row.product_name)
-		  });
+		  
 	})
 	
 })}
 
+function numbLeft(numberOf) {
+	connection.query("SELECT id, product_name," + input.action + ' FROM products WHERE id="' + input.action + '"', (err,res) => {
+
+	})};
