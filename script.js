@@ -50,27 +50,43 @@ connection.query("SELECT * FROM products", (err,res) => {
 	  })
 	  .then(function(input) {
 		console.log("Ah, so you decided you wanted item " + input.action + "?")
+		var userid = input.action;
 		inquirer
 		.prompt({
 			name: "numberOf",
 			type: "number",
 			message: "how many of this item do you want?",	
 		})
-		.then(function(insertNumber) {
-		connection.query("SELECT " + input.numberOf + " FROM id " +input.action function(err, res) {
-			if (err) throw err;
-			console.log(
-			  "Position: " +
-				res[0].position +
-				" || Song: " +
-				res[0].song +
-				" || Artist: " +
-				res[0].artist +
-				" || Year: " +
-				res[0].year
-			);
+		.then(function(number) {
+			console.log("It looks like we have 1 of " + input.action + ".")
+			var userid = input.action;
+			connection.query("SELECT id," + input.action + " FROM products.id", (err,res) => {
+				if(err) throw err;
+			  
+				console.log('Data received from Db:');
+				console.log(res);
+			  });
 
-	  });
-		 
-		})
-	})}
+
+		/*function quan(quantity) {
+			searchQuan();
+		}
+
+		
+		
+		connection.connect(function searchQuan(err) {
+			if (err) throw err;
+			con.query("SELECT " + userid + " FROM quantity", function (err, result, fields) {
+			  if (err) throw err;
+			  console.log(result);
+			  console.log(userid);
+			});
+		  });*/
+		  Object.keys(result).forEach(function(key) {
+			var row = result[input.action];
+			console.log(row.product_name)
+		  });
+	})
+	
+})}
+
